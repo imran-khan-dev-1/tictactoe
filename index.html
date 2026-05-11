@@ -16,328 +16,423 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px);
+    padding: env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 16px);
   }
 
-  header {
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    padding: 24px 0 16px;
-  }
-  header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: #fff; }
-  header p { font-size: 13px; color: #888; margin-top: 4px; }
+  header { width: 100%; max-width: 420px; text-align: center; padding: 20px 0 16px; }
+  header h1 { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
 
-  .mode-bar {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    max-width: 420px;
-    margin-bottom: 20px;
-  }
-  .mode-btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1.5px solid #333;
-    background: #1a1a1a;
-    color: #888;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all .15s;
+  /* LOBBY */
+  #lobby { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
+  .lobby-btn {
+    width: 100%; padding: 18px;
+    border-radius: 16px; border: 1.5px solid #333;
+    background: #1a1a1a; color: #fff;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: background .15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .mode-btn.active {
-    border-color: #e5531a;
-    background: #2a1510;
-    color: #e5531a;
+  .lobby-btn.primary { background: #e5531a; border-color: #e5531a; }
+  .lobby-btn:active { opacity: .8; }
+
+  .divider { text-align: center; color: #555; font-size: 13px; margin: 4px 0; }
+
+  .input-wrap { display: flex; gap: 8px; }
+  .room-input {
+    flex: 1; padding: 16px;
+    border-radius: 16px; border: 1.5px solid #333;
+    background: #1a1a1a; color: #fff;
+    font-size: 20px; font-weight: 700; text-align: center;
+    letter-spacing: 6px; text-transform: uppercase;
+    outline: none;
+  }
+  .room-input::placeholder { letter-spacing: 2px; font-size: 14px; font-weight: 400; color: #555; }
+  .room-input:focus { border-color: #555; }
+  .join-btn {
+    padding: 16px 20px;
+    border-radius: 16px; border: 1.5px solid #1d9e75;
+    background: #1d9e75; color: #fff;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
   }
 
-  .scores {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    width: 100%;
-    max-width: 420px;
-    margin-bottom: 20px;
-  }
-  .score-card {
-    background: #1a1a1a;
-    border-radius: 14px;
-    padding: 12px 8px;
-    text-align: center;
-  }
-  .score-label { font-size: 11px; color: #666; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
-  .score-num { font-size: 28px; font-weight: 700; }
-  .score-num.x { color: #e5531a; }
-  .score-num.o { color: #1d9e75; }
-  .score-num.d { color: #888; }
-
-  .status {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    min-height: 22px;
-    color: #ccc;
-    text-align: center;
+  /* WAITING */
+  #waiting { width: 100%; max-width: 420px; display: none; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .room-code-box { background: #1a1a1a; border-radius: 16px; padding: 24px; width: 100%; border: 1.5px solid #333; }
+  .room-code-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .room-code { font-size: 48px; font-weight: 800; letter-spacing: 10px; color: #e5531a; }
+  .waiting-text { color: #888; font-size: 14px; }
+  .pulse { animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .copy-btn {
+    width: 100%; padding: 14px;
+    border-radius: 14px; border: 1.5px solid #333;
+    background: #1a1a1a; color: #ccc;
+    font-size: 14px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .board-wrap {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
+  /* GAME */
+  #game { width: 100%; max-width: 420px; display: none; flex-direction: column; align-items: center; }
+  .player-badges { display: flex; gap: 8px; width: 100%; margin-bottom: 16px; }
+  .badge {
+    flex: 1; padding: 10px 8px;
+    border-radius: 14px; border: 1.5px solid #2a2a2a;
+    background: #1a1a1a; text-align: center;
+    transition: border-color .2s, background .2s;
   }
-  .board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%;
-  }
+  .badge.active { border-color: #e5531a; background: #2a1510; }
+  .badge.active.o-turn { border-color: #1d9e75; background: #0e2a1e; }
+  .badge-symbol { font-size: 22px; font-weight: 800; }
+  .badge-symbol.x { color: #e5531a; }
+  .badge-symbol.o { color: #1d9e75; }
+  .badge-label { font-size: 11px; color: #666; margin-top: 2px; }
+
+  .status { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #ccc; text-align: center; min-height: 22px; }
+
+  .board-wrap { position: relative; width: 100%; }
+  .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
   .cell {
     aspect-ratio: 1;
-    background: #1a1a1a;
-    border-radius: 18px;
+    background: #1a1a1a; border-radius: 18px;
     border: 1.5px solid #2a2a2a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(40px, 16vw, 80px);
-    font-weight: 800;
-    cursor: pointer;
-    transition: background .12s, transform .12s;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(40px, 16vw, 80px); font-weight: 800;
+    cursor: pointer; transition: background .12s;
+    -webkit-tap-highlight-color: transparent; user-select: none;
   }
   .cell:active:not(.taken) { transform: scale(.93); }
   .cell.x { color: #e5531a; }
   .cell.o { color: #1d9e75; }
-  .cell.win { background: #2a1e0e; border-color: #e5531a44; }
-  .cell.win.o { background: #0e2a1e; border-color: #1d9e7544; }
+  .cell.win { background: #2a1e0e; border-color: #e5531a55; }
+  .cell.win.o { background: #0e2a1e; border-color: #1d9e7555; }
   .cell.taken { cursor: default; }
   .cell.pop { animation: pop .18s ease-out; }
   @keyframes pop { 0%{transform:scale(.6)} 60%{transform:scale(1.12)} 100%{transform:scale(1)} }
 
-  .actions {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    max-width: 420px;
-    margin-top: 16px;
-  }
+  .scores { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; margin-top: 14px; }
+  .sc { background: #1a1a1a; border-radius: 14px; padding: 10px 8px; text-align: center; }
+  .sc-label { font-size: 11px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+  .sc-num { font-size: 24px; font-weight: 700; }
+  .sc-num.x { color: #e5531a; }
+  .sc-num.o { color: #1d9e75; }
+
+  .game-actions { display: flex; gap: 8px; width: 100%; margin-top: 12px; }
   .action-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: 1.5px solid #333;
-    background: #1a1a1a;
-    color: #ccc;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+    flex: 1; padding: 13px;
+    border-radius: 14px; border: 1.5px solid #333;
+    background: #1a1a1a; color: #ccc;
+    font-size: 13px; font-weight: 500; cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: background .12s;
   }
   .action-btn:active { background: #2a2a2a; }
 
+  /* OVERLAY */
   .overlay {
-    display: none;
-    position: absolute;
-    inset: -10px;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,.75);
-    border-radius: 22px;
-    z-index: 10;
-    backdrop-filter: blur(4px);
+    display: none; position: absolute; inset: -10px;
+    align-items: center; justify-content: center;
+    background: rgba(0,0,0,.75); border-radius: 22px;
+    z-index: 10; backdrop-filter: blur(4px);
   }
   .overlay.show { display: flex; }
   .result-box {
-    background: #1e1e1e;
-    border-radius: 20px;
-    padding: 28px 24px;
-    text-align: center;
-    border: 1.5px solid #333;
-    width: calc(100% - 40px);
+    background: #1e1e1e; border-radius: 20px;
+    padding: 28px 24px; text-align: center;
+    border: 1.5px solid #333; width: calc(100% - 40px);
   }
   .result-emoji { font-size: 52px; margin-bottom: 10px; }
   .result-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
   .result-sub { font-size: 14px; color: #888; margin-bottom: 20px; }
   .result-btns { display: flex; gap: 8px; }
   .result-btns button {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: 1.5px solid #333;
-    background: #2a2a2a;
-    color: #ccc;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    flex: 1; padding: 14px;
+    border-radius: 14px; border: 1.5px solid #333;
+    background: #2a2a2a; color: #ccc;
+    font-size: 14px; font-weight: 500; cursor: pointer;
   }
-  .result-btns button.primary {
-    background: #e5531a;
-    border-color: #e5531a;
-    color: #fff;
-  }
+  .result-btns button.primary { background: #e5531a; border-color: #e5531a; color: #fff; }
+
+  .error-msg { color: #e5531a; font-size: 13px; text-align: center; min-height: 18px; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Tic Tac Toe</h1>
-  <p id="header-sub">vs Computer</p>
-</header>
+<header><h1>Tic Tac Toe</h1></header>
 
-<div class="mode-bar">
-  <button class="mode-btn active" id="btn-cpu" onclick="setMode('cpu')">Vs Computer</button>
-  <button class="mode-btn" id="btn-friend" onclick="setMode('friend')">Vs Friend</button>
+<!-- LOBBY -->
+<div id="lobby">
+  <button class="lobby-btn primary" onclick="createGame()">🎮 Create new game</button>
+  <div class="divider">— or join with a code —</div>
+  <div class="input-wrap">
+    <input class="room-input" id="code-input" maxlength="4" placeholder="Enter code" oninput="this.value=this.value.toUpperCase()">
+    <button class="join-btn" onclick="joinGame()">Join</button>
+  </div>
+  <div class="error-msg" id="err"></div>
 </div>
 
-<div class="scores">
-  <div class="score-card">
-    <div class="score-label" id="p1-label">You</div>
-    <div class="score-num x" id="score-x">0</div>
+<!-- WAITING FOR FRIEND -->
+<div id="waiting">
+  <div class="room-code-box">
+    <div class="room-code-label">Share this code with your friend</div>
+    <div class="room-code" id="display-code">----</div>
   </div>
-  <div class="score-card">
-    <div class="score-label">Draws</div>
-    <div class="score-num d" id="score-d">0</div>
-  </div>
-  <div class="score-card">
-    <div class="score-label" id="p2-label">Computer</div>
-    <div class="score-num o" id="score-o">0</div>
-  </div>
+  <div class="waiting-text pulse">Waiting for your friend to join…</div>
+  <button class="copy-btn" onclick="copyCode()">📋 Copy code to share</button>
+  <button class="action-btn" onclick="cancelGame()" style="width:100%">Cancel</button>
 </div>
 
-<div class="status" id="status">Your turn (X)</div>
-
-<div class="board-wrap">
-  <div class="board" id="board">
-    <div class="cell" data-i="0" onclick="click_(0)"></div>
-    <div class="cell" data-i="1" onclick="click_(1)"></div>
-    <div class="cell" data-i="2" onclick="click_(2)"></div>
-    <div class="cell" data-i="3" onclick="click_(3)"></div>
-    <div class="cell" data-i="4" onclick="click_(4)"></div>
-    <div class="cell" data-i="5" onclick="click_(5)"></div>
-    <div class="cell" data-i="6" onclick="click_(6)"></div>
-    <div class="cell" data-i="7" onclick="click_(7)"></div>
-    <div class="cell" data-i="8" onclick="click_(8)"></div>
+<!-- GAME BOARD -->
+<div id="game">
+  <div class="player-badges">
+    <div class="badge" id="badge-x">
+      <div class="badge-symbol x">X</div>
+      <div class="badge-label" id="badge-x-label">You</div>
+    </div>
+    <div class="badge" id="badge-o">
+      <div class="badge-symbol o">O</div>
+      <div class="badge-label" id="badge-o-label">Friend</div>
+    </div>
   </div>
-  <div class="overlay" id="overlay">
-    <div class="result-box">
-      <div class="result-emoji" id="r-emoji">🎉</div>
-      <div class="result-title" id="r-title">You win!</div>
-      <div class="result-sub" id="r-sub">Well played</div>
-      <div class="result-btns">
-        <button onclick="resetAll()">Reset</button>
-        <button class="primary" onclick="newGame()">Play again</button>
+
+  <div class="status" id="status">Waiting…</div>
+
+  <div class="board-wrap">
+    <div class="board" id="board">
+      <div class="cell" data-i="0" onclick="clickCell(0)"></div>
+      <div class="cell" data-i="1" onclick="clickCell(1)"></div>
+      <div class="cell" data-i="2" onclick="clickCell(2)"></div>
+      <div class="cell" data-i="3" onclick="clickCell(3)"></div>
+      <div class="cell" data-i="4" onclick="clickCell(4)"></div>
+      <div class="cell" data-i="5" onclick="clickCell(5)"></div>
+      <div class="cell" data-i="6" onclick="clickCell(6)"></div>
+      <div class="cell" data-i="7" onclick="clickCell(7)"></div>
+      <div class="cell" data-i="8" onclick="clickCell(8)"></div>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="result-box">
+        <div class="result-emoji" id="r-emoji">🎉</div>
+        <div class="result-title" id="r-title">You win!</div>
+        <div class="result-sub" id="r-sub"></div>
+        <div class="result-btns">
+          <button onclick="leaveGame()">Leave</button>
+          <button class="primary" onclick="requestRematch()">Rematch</button>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="scores">
+    <div class="sc"><div class="sc-label">X</div><div class="sc-num x" id="sc-x">0</div></div>
+    <div class="sc"><div class="sc-label">Draw</div><div class="sc-num" id="sc-d">0</div></div>
+    <div class="sc"><div class="sc-label">O</div><div class="sc-num o" id="sc-o">0</div></div>
+  </div>
+
+  <div class="game-actions">
+    <button class="action-btn" onclick="leaveGame()">Leave game</button>
+  </div>
 </div>
 
-<div class="actions">
-  <button class="action-btn" onclick="newGame()">New game</button>
-  <button class="action-btn" onclick="resetAll()">Reset scores</button>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBSbxvBRb0WdJJSAIhx0c4EO7_DvMTkP30",
+  authDomain: "tictactoe-3b399.firebaseapp.com",
+  databaseURL: "https://tictactoe-3b399-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "tictactoe-3b399",
+  storageBucket: "tictactoe-3b399.firebasestorage.app",
+  messagingSenderId: "998938186973",
+  appId: "1:998938186973:web:d517ea26e985e9c846b734"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
 const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-let board, cur, mode = 'cpu', locked, scores = {X:0,O:0,D:0};
+let roomCode, mySymbol, gameRef, unsubscribe;
+let scores = {X:0,O:0,D:0};
 
-function init() {
-  board = Array(9).fill(null);
-  cur = 'X'; locked = false;
-  renderBoard();
-  setStatus();
-  document.getElementById('overlay').classList.remove('show');
+function randCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:4}, ()=>chars[Math.floor(Math.random()*chars.length)]).join('');
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById('btn-cpu').classList.toggle('active', m==='cpu');
-  document.getElementById('btn-friend').classList.toggle('active', m==='friend');
-  document.getElementById('p1-label').textContent = m==='cpu' ? 'You' : 'Player 1';
-  document.getElementById('p2-label').textContent = m==='cpu' ? 'Computer' : 'Player 2';
-  document.getElementById('header-sub').textContent = m==='cpu' ? 'vs Computer' : 'Pass & Play';
-  scores = {X:0,O:0,D:0}; updateScores(); init();
-}
-
-function renderBoard() {
-  document.querySelectorAll('.cell').forEach((c,i)=>{
-    c.textContent = board[i]||'';
-    c.className = 'cell'+(board[i]?' taken '+board[i].toLowerCase():'');
+function show(id) {
+  ['lobby','waiting','game'].forEach(s => {
+    const el = document.getElementById(s);
+    el.style.display = s===id ? 'flex' : 'none';
   });
 }
 
-function setStatus() {
-  const el = document.getElementById('status');
-  if (mode==='cpu') el.textContent = cur==='X' ? 'Your turn (X)' : 'Computer thinking…';
-  else el.textContent = `Player ${cur==='X'?1:2}'s turn (${cur})`;
+window.createGame = async function() {
+  roomCode = randCode();
+  mySymbol = 'X';
+  document.getElementById('display-code').textContent = roomCode;
+  gameRef = ref(db, 'games/' + roomCode);
+  await set(gameRef, {
+    board: Array(9).fill(null),
+    turn: 'X',
+    players: {X: true},
+    status: 'waiting',
+    scores: {X:0,O:0,D:0}
+  });
+  show('waiting');
+  listenGame();
 }
 
-function getWinner(b) {
+window.joinGame = async function() {
+  const code = document.getElementById('code-input').value.trim().toUpperCase();
+  if (code.length !== 4) { setErr('Enter a 4-letter code'); return; }
+  const snap = await get(ref(db, 'games/' + code));
+  if (!snap.exists()) { setErr('Game not found — check the code'); return; }
+  const data = snap.val();
+  if (data.status !== 'waiting') { setErr('Game already started'); return; }
+  roomCode = code;
+  mySymbol = 'O';
+  gameRef = ref(db, 'games/' + roomCode);
+  await update(gameRef, {'players/O': true, status: 'playing'});
+  scores = {X:0,O:0,D:0};
+  show('game');
+  listenGame();
+}
+
+function listenGame() {
+  if (unsubscribe) unsubscribe();
+  unsubscribe = onValue(gameRef, snap => {
+    if (!snap.exists()) { leaveGame(); return; }
+    const g = snap.val();
+    if (g.status === 'playing' && document.getElementById('waiting').style.display !== 'none') {
+      show('game');
+    }
+    if (g.scores) { scores = g.scores; updateScores(); }
+    renderBoard(g.board, g.turn, g.status, g.winLine, g.winner, g.rematchVotes);
+  });
+}
+
+function renderBoard(board, turn, status, winLine, winner, rematchVotes) {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((c,i) => {
+    c.textContent = board[i] || '';
+    c.className = 'cell' + (board[i] ? ' taken ' + board[i].toLowerCase() : '');
+    if (winLine && winLine.includes(i)) {
+      c.classList.add('win');
+      if (winner === 'O') c.classList.add('o');
+    }
+  });
+
+  // badges
+  const xBadge = document.getElementById('badge-x');
+  const oBadge = document.getElementById('badge-o');
+  xBadge.className = 'badge' + (turn==='X' && status==='playing' ? ' active' : '');
+  oBadge.className = 'badge' + (turn==='O' && status==='playing' ? ' active o-turn' : '');
+
+  // status
+  const st = document.getElementById('status');
+  if (status === 'waiting') { st.textContent = 'Waiting for friend…'; return; }
+  if (status === 'playing') {
+    st.textContent = turn === mySymbol ? 'Your turn' : "Friend's turn";
+    document.getElementById('overlay').classList.remove('show');
+  }
+  if (status === 'done') showResult(winner, rematchVotes);
+}
+
+function showResult(winner, rematchVotes) {
+  const isMe = winner === mySymbol;
+  const emoji = winner === 'D' ? '🤝' : isMe ? '🏆' : '😅';
+  const title = winner === 'D' ? "It's a draw!" : isMe ? 'You win!' : 'Friend wins!';
+  const sub = rematchVotes ? `${Object.keys(rematchVotes).length}/2 want a rematch` : '';
+  document.getElementById('r-emoji').textContent = emoji;
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-sub').textContent = sub;
+  setTimeout(() => document.getElementById('overlay').classList.add('show'), 400);
+}
+
+window.clickCell = async function(i) {
+  if (!gameRef) return;
+  const snap = await get(gameRef);
+  const g = snap.val();
+  if (!g || g.status !== 'playing') return;
+  if (g.turn !== mySymbol) return;
+  if (g.board[i]) return;
+
+  const newBoard = [...g.board];
+  newBoard[i] = mySymbol;
+  const result = checkWinner(newBoard);
+  const updates = { board: newBoard };
+
+  if (result) {
+    updates.status = 'done';
+    updates.winner = result.winner;
+    if (result.line) updates.winLine = result.line;
+    const newScores = {...(g.scores||{X:0,O:0,D:0})};
+    newScores[result.winner] = (newScores[result.winner]||0) + 1;
+    updates.scores = newScores;
+  } else {
+    updates.turn = mySymbol === 'X' ? 'O' : 'X';
+  }
+  await update(gameRef, updates);
+}
+
+window.requestRematch = async function() {
+  if (!gameRef) return;
+  const snap = await get(gameRef);
+  const g = snap.val();
+  const votes = g.rematchVotes || {};
+  votes[mySymbol] = true;
+  if (Object.keys(votes).length >= 2) {
+    await update(gameRef, {
+      board: Array(9).fill(null),
+      turn: 'X', status: 'playing',
+      winner: null, winLine: null, rematchVotes: null
+    });
+  } else {
+    await update(gameRef, {rematchVotes: votes});
+    document.getElementById('r-sub').textContent = 'Waiting for friend…';
+  }
+}
+
+window.leaveGame = function() {
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  if (gameRef && mySymbol === 'X') remove(gameRef);
+  gameRef = null; roomCode = null; mySymbol = null;
+  scores = {X:0,O:0,D:0}; updateScores();
+  document.getElementById('code-input').value = '';
+  document.getElementById('err').textContent = '';
+  show('lobby');
+}
+
+window.cancelGame = function() {
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  if (gameRef) remove(gameRef);
+  gameRef = null; show('lobby');
+}
+
+window.copyCode = function() {
+  const code = document.getElementById('display-code').textContent;
+  const msg = `Join my Tic Tac Toe game! Code: ${code}\n${location.href}`;
+  navigator.clipboard.writeText(msg).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy code to share', 2000);
+  });
+}
+
+function checkWinner(b) {
   for (let [a,c,d] of WINS) if (b[a]&&b[a]===b[c]&&b[a]===b[d]) return {winner:b[a],line:[a,c,d]};
   if (b.every(v=>v)) return {winner:'D'};
   return null;
 }
 
 function updateScores() {
-  document.getElementById('score-x').textContent = scores.X;
-  document.getElementById('score-o').textContent = scores.O;
-  document.getElementById('score-d').textContent = scores.D;
+  document.getElementById('sc-x').textContent = scores.X||0;
+  document.getElementById('sc-o').textContent = scores.O||0;
+  document.getElementById('sc-d').textContent = scores.D||0;
 }
 
-function showOverlay(winner) {
-  const emojis={X:'🏆',O: mode==='cpu'?'🤖':'🥇',D:'🤝'};
-  const titles={X:mode==='cpu'?'You win!':'Player 1 wins!',O:mode==='cpu'?'Computer wins!':'Player 2 wins!',D:"It's a draw!"};
-  const subs={X:mode==='cpu'?'Nicely done!':'Well played!',O:mode==='cpu'?'The AI got you!':'Solid moves!',D:'Too evenly matched!'};
-  document.getElementById('r-emoji').textContent = emojis[winner];
-  document.getElementById('r-title').textContent = titles[winner];
-  document.getElementById('r-sub').textContent = subs[winner];
-  setTimeout(()=>document.getElementById('overlay').classList.add('show'),400);
-}
+function setErr(msg) { document.getElementById('err').textContent = msg; }
 
-function click_(i) {
-  if (locked||board[i]||(mode==='cpu'&&cur==='O')) return;
-  place(i, cur);
-}
-
-function place(i, player) {
-  board[i] = player;
-  const c = document.querySelector(`[data-i="${i}"]`);
-  c.textContent = player;
-  c.className = `cell taken ${player.toLowerCase()} pop`;
-  const res = getWinner(board);
-  if (res) {
-    if (res.line) res.line.forEach(idx=>{
-      const el = document.querySelector(`[data-i="${idx}"]`);
-      el.classList.add('win');
-      if (player==='O') el.classList.add('o');
-    });
-    scores[res.winner]++; updateScores(); locked=true; showOverlay(res.winner); return;
-  }
-  cur = cur==='X'?'O':'X'; setStatus();
-  if (mode==='cpu'&&cur==='O') { locked=true; setTimeout(cpuMove,600); }
-}
-
-function cpuMove() {
-  locked=false; place(minimax(board,'O').idx,'O');
-}
-
-function minimax(b,player,depth=0) {
-  const res=getWinner(b);
-  if (res) { if(res.winner==='O') return {score:10-depth}; if(res.winner==='X') return {score:depth-10}; return {score:0}; }
-  const moves=[];
-  b.forEach((v,i)=>{ if(!v){const nb=[...b];nb[i]=player;const s=minimax(nb,player==='O'?'X':'O',depth+1).score;moves.push({idx:i,score:s});}});
-  return player==='O' ? moves.reduce((a,m)=>m.score>a.score?m:a) : moves.reduce((a,m)=>m.score<a.score?m:a);
-}
-
-function newGame() { init(); }
-function resetAll() { scores={X:0,O:0,D:0}; updateScores(); init(); }
-
-init();
+show('lobby');
 </script>
 </body>
 </html>
