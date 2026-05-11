@@ -311,6 +311,8 @@ function listenGame() {
 }
 
 function renderBoard(board, turn, status, winLine, winner, rematchVotes) {
+  if (!board) return;
+  if (!Array.isArray(board)) board = Object.values(board);
   const cells = document.querySelectorAll('.cell');
   cells.forEach((c,i) => {
     c.textContent = board[i] || '';
@@ -356,7 +358,7 @@ window.clickCell = async function(i) {
   if (g.turn !== mySymbol) return;
   if (g.board[i]) return;
 
-  const newBoard = [...g.board];
+  const newBoard = Array.isArray(g.board) ? [...g.board] : Object.values(g.board);
   newBoard[i] = mySymbol;
   const result = checkWinner(newBoard);
   const updates = { board: newBoard };
